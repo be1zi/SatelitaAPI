@@ -14,3 +14,22 @@ type Author {
     firstName: String
     lastName: String
 }
+
+
+
+
+
+type Mutation {
+    createUser(authProvider: AuthData): User
+}
+
+type User {
+    id: ID
+    login: String
+    password: String
+}
+
+input AuthData {
+    login: String
+    password: String
+}
