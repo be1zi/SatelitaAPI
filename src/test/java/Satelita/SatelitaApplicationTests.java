@@ -1,4 +1,4 @@
-package com.satelita.satelita;
+package Satelita;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

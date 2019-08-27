@@ -1,4 +1,4 @@
-package com.satelita.satelita.Models;
+package Satelita.DataBase.Models;
 
 public class Auth {
 
