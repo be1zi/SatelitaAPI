@@ -1,0 +1,25 @@
+type Mutation {
+    createUser(auth: AuthData) : User
+    signinUser(auth: AuthData) : Boolean
+}
+
+type Query {
+    getUser(auth: AuthData) : User
+    getNumber: Int
+}
+
+type User {
+    id: ID
+    login: String
+    password: String
+}
+
+input AuthData {
+    login: String
+    password: String
+}
+
+type Token {
+    token: String
+    expiryTime: Int
+}

@@ -1,6 +1,7 @@
 package Satelita;
 
-//import Satelita.Network.Resolver.Mutation;
+import Satelita.Network.Resolver.Mutation;
+import Satelita.Network.Resolver.Query;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -12,9 +13,14 @@ public class SatelitaApplication {
         SpringApplication.run(SatelitaApplication.class, args);
     }
 
-//    @Bean
-//    public Mutation mutation() {
-//        return new Mutation();
-//    }
 
+    @Bean
+    public Query queryResolver() {
+        return new Query();
+    }
+
+    @Bean
+    public Mutation mutationResolver() {
+        return new Mutation();
+    }
 }
