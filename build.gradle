@@ -27,4 +27,7 @@ dependencies {
     compile group: 'com.graphql-java', name: 'graphql-java-tools', version: '4.3.0'
     compile group: 'com.graphql-java', name: 'graphql-java-servlet', version: '4.7.0'
     compile group: 'com.graphql-java', name: 'graphql-spring-boot-starter', version: '4.2.0' // 3.10.0
+    
+    //Tools
+    compile group: 'com.google.guava', name: 'guava', version: '28.0-jre'
 }
