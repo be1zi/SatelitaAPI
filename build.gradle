@@ -26,5 +26,5 @@ dependencies {
     implementation 'com.graphql-java:graphql-java:6.0'
     compile group: 'com.graphql-java', name: 'graphql-java-tools', version: '4.3.0'
     compile group: 'com.graphql-java', name: 'graphql-java-servlet', version: '4.7.0'
-    compile group: 'com.graphql-java', name: 'graphql-spring-boot-starter', version: '3.10.0'
+    compile group: 'com.graphql-java', name: 'graphql-spring-boot-starter', version: '4.2.0' // 3.10.0
 }
