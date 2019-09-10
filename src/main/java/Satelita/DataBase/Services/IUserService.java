@@ -11,4 +11,5 @@ public interface IUserService {
 
     ServiceResult<SigninPayload, LoginEnum> loginUser(Auth auth);
     ServiceResult<User, EnrollEnum> registerUser(Auth authData);
+    ServiceResult<User, LoginEnum> authorizeUser(Auth auth);
 }

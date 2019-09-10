@@ -1,5 +1,7 @@
 package Satelita.Network.Authorization;
 
+import Satelita.DataBase.Services.AuthorizationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -16,6 +18,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private AuthorizationService authorizationService;
 
 //    @Override
 //    protected void configure(HttpSecurity http) throws Exception {
@@ -63,11 +68,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("a")
-                .password("b")
-                //.password(passwordEncoder().encode("b"))
-                .authorities("ROLE_USER");
+        auth.userDetailsService(authorizationService);//.passwordEncoder(passwordEncoder());
+
+        //        auth.inMemoryAuthentication()
+//                .withUser("a")
+//                .password("b")
+//                //.password(passwordEncoder().encode("b"))
+//                .authorities("ROLE_USER");
     }
 
     @Bean

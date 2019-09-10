@@ -2,6 +2,7 @@ package Satelita.DataBase.Services;
 
 import Satelita.DataBase.Enum.EnrollEnum;
 import Satelita.DataBase.Enum.LoginEnum;
+import Satelita.DataBase.Enum.RoleEnum;
 import Satelita.DataBase.Models.Auth;
 import Satelita.DataBase.Models.SigninPayload;
 import Satelita.DataBase.Models.User;
@@ -104,6 +105,7 @@ public class UserService implements IUserService {
         u.setLogin(authData.getLogin());
         u.setPassword(password);
         u.setDeleted(false);
+        u.setRole(RoleEnum.ROLE_USER.toString());
 
         userRepository.save(u);
 
@@ -117,5 +119,27 @@ public class UserService implements IUserService {
         }
 
         return result;
+    }
+
+    @Override
+    public ServiceResult<User, LoginEnum> authorizeUser(Auth auth) {
+
+        ServiceResult<User, LoginEnum> serviceResult = new ServiceResult<>();
+
+        if (auth.getLogin() == null || auth.getLogin().isEmpty()) {
+            serviceResult.setEnumValue(LoginEnum.MissingLogin);
+            return serviceResult;
+        }
+
+        User user = userRepository.findByLoginAndDeletedFalse(auth.getLogin());
+
+        if (user != null) {
+            serviceResult.setEnumValue(LoginEnum.Success);
+            serviceResult.setData(user);
+        } else {
+            serviceResult.setEnumValue(LoginEnum.LoginNotFound);
+        }
+
+        return serviceResult;
     }
 }

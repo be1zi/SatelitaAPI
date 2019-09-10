@@ -16,6 +16,9 @@ public class User {
     @NotNull
     private String password;
 
+    @NotNull
+    private String role;
+
     private boolean deleted;
 
     public Integer getId() {
@@ -50,12 +53,21 @@ public class User {
         this.deleted = deleted;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
                 ", deleted=" + deleted +
                 '}';
     }
