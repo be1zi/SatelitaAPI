@@ -3,6 +3,7 @@ package Satelita.DataBase.Services;
 import Satelita.DataBase.Enum.EnrollEnum;
 import Satelita.DataBase.Enum.LoginEnum;
 import Satelita.DataBase.Models.Auth;
+import Satelita.DataBase.Models.SigninPayload;
 import Satelita.DataBase.Models.User;
 import Satelita.DataBase.Repository.UserRepository;
 import Satelita.DataBase.Tools.ServiceResult;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 
 @Service("userService")
@@ -20,10 +22,13 @@ public class UserService implements IUserService {
     @Autowired
     UserRepository userRepository;
 
-    @Override
-    public ServiceResult<User, LoginEnum> loginUser(Auth auth) {
+    @Autowired
+    HttpSession httpSession;
 
-        ServiceResult<User, LoginEnum> serviceResult = new ServiceResult<>();
+    @Override
+    public ServiceResult<SigninPayload, LoginEnum> loginUser(Auth auth) {
+
+        ServiceResult<SigninPayload, LoginEnum> serviceResult = new ServiceResult<>();
 
         if (auth.getLogin() == null || auth.getLogin().isEmpty()) {
             serviceResult.setEnumValue(LoginEnum.MissingLogin);
@@ -35,19 +40,23 @@ public class UserService implements IUserService {
             return serviceResult;
         }
 
-        User u = userRepository
-                .findByLoginAndPasswordAndDeletedFalse(
-                        auth.getLogin(),
-                        Hashing.sha256()
-                                .hashString(
-                                        auth.getPassword(),
-                                        StandardCharsets.UTF_8)
-                                .toString()
-                );
+        String password = Hashing.sha256()
+                .hashString(
+                        auth.getPassword(),
+                        StandardCharsets.UTF_8)
+                .toString();
+
+        User u = userRepository.findByLoginAndPasswordAndDeletedFalse(auth.getLogin(), password);
 
         if (u != null) {
+//            Authentication authentication = new UsernamePasswordAuthenticationToken(auth.getLogin(), password);
+//            SecurityContextHolder.getContext().setAuthentication(authentication);
+//            httpSession.setAttribute("SPRING_SECURITY_CNTEXT", SecurityContextHolder.getContext());
+//
+//            SigninPayload sp = new SigninPayload(httpSession.getId(), 12345);
+
             serviceResult.setEnumValue(LoginEnum.Success);
-            serviceResult.setData(u);
+//            serviceResult.setData(sp);
             return serviceResult;
         }
 
