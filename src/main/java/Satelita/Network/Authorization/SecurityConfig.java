@@ -51,7 +51,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        return new HttpSessionEventPublisher();
 //    }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and()

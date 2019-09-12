@@ -1,6 +1,7 @@
 package Satelita.Network.Authorization;
 
 
+import com.google.common.hash.Hashing;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -17,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,7 +39,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String login = request.getParameter("login");
         String password = request.getParameter("password");
 
-        Authentication token = new UsernamePasswordAuthenticationToken(login, password);
+        String securedPassword = Hashing.sha256()
+                .hashString(
+                        password,
+                        StandardCharsets.UTF_8)
+                .toString();
+
+        Authentication token = new UsernamePasswordAuthenticationToken(login, securedPassword);
 
         return authenticationManager.authenticate(token);
     }
