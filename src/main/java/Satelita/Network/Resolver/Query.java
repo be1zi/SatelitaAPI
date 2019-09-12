@@ -9,7 +9,6 @@ public class Query implements GraphQLQueryResolver {
     @Autowired
     IUserService iUserService;
 
-    //@PreAuthorize("hasRole('USER')")
     public int getNumber() {
         return 1234;
     }

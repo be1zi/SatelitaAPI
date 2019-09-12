@@ -22,41 +22,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthorizationService authorizationService;
 
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .csrf().disable()
-//                .authorizeRequests()
-//                .antMatchers("/graphql").permitAll()
-//                .and()
-//                .requestCache()
-//                .requestCache(new NullRequestCache())
-//                .and()
-//                .headers()
-//                .frameOptions().sameOrigin()
-//                .and()
-//                .sessionManagement()
-//                .maximumSessions(1)
-//                .maxSessionsPreventsLogin(true)
-//                .sessionRegistry(sessionRegistry());
-//    }
-//
-//    @Bean
-//    public SessionRegistry sessionRegistry() {
-//        return new SessionRegistryImpl();
-//    }
-//
-//    @Bean
-//    public HttpSessionEventPublisher httpSessionEventPublisher() {
-//        return new HttpSessionEventPublisher();
-//    }
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers().permitAll()
+                .antMatchers("/graphql").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
@@ -67,13 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(authorizationService);//.passwordEncoder(passwordEncoder());
-
-        //        auth.inMemoryAuthentication()
-//                .withUser("a")
-//                .password("b")
-//                //.password(passwordEncoder().encode("b"))
-//                .authorities("ROLE_USER");
+        auth.userDetailsService(authorizationService);
     }
 
     @Bean
