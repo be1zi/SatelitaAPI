@@ -50,14 +50,7 @@ public class UserService implements IUserService {
         User u = userRepository.findByLoginAndPasswordAndDeletedFalse(auth.getLogin(), password);
 
         if (u != null) {
-//            Authentication authentication = new UsernamePasswordAuthenticationToken(auth.getLogin(), password);
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//            httpSession.setAttribute("SPRING_SECURITY_CNTEXT", SecurityContextHolder.getContext());
-//
-//            SigninPayload sp = new SigninPayload(httpSession.getId(), 12345);
-
             serviceResult.setEnumValue(LoginEnum.Success);
-//            serviceResult.setData(sp);
             return serviceResult;
         }
 
@@ -78,13 +71,13 @@ public class UserService implements IUserService {
         ServiceResult<User, EnrollEnum> result = new ServiceResult<>();
         User u;
 
-        if (authData.getLogin() == null ||
-                authData.getLogin().isEmpty() ||
-                authData.getPassword() == null ||
-                authData.getPassword().isEmpty()) {
+        if (authData.getLogin() == null || authData.getLogin().isEmpty()) {
+            result.setEnumValue(EnrollEnum.EmptyLogin);
+            return result;
+        }
 
-            result.setEnumValue(EnrollEnum.EmptyField);
-
+        if (authData.getPassword() == null || authData.getPassword().isEmpty()) {
+            result.setEnumValue(EnrollEnum.EmptyPassword);
             return result;
         }
 

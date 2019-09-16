@@ -1,7 +1,10 @@
 package Satelita.DataBase.Services;
 
+import Satelita.DataBase.Enum.LoginEnum;
 import Satelita.DataBase.Models.Auth;
 import Satelita.DataBase.Models.User;
+import Satelita.DataBase.Tools.ServiceResult;
+import graphql.GraphQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,7 +24,32 @@ public class AuthorizationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = iUserService.authorizeUser(new Auth(username, null)).getData();
+        ServiceResult<User, LoginEnum> result = iUserService.authorizeUser(new Auth(username, null));
+        User user = result.getData();
+
+        if (user == null) {
+            switch (result.getEnumValue()) {
+                case LoginNotFound: {
+                    throw new GraphQLException("Invalid credentials: login not exist");
+                }
+                case MissingLogin: {
+                    throw new GraphQLException("Invalid credentials: login is required");
+                }
+                case MissingPassword: {
+                    throw new GraphQLException("Invalid credentials: password ir required");
+                }
+                case WrongPassword: {
+                    throw new GraphQLException("Invalid credentials: incorrect password");
+                }
+                case Failure: {
+                    throw new GraphQLException("Internal error");
+                }
+                case Success: {
+                    break;
+                }
+            }
+        }
+
         List<GrantedAuthority> authorities = buildUserAuthority(user);
 
         return buildUserForAuthentication(user, authorities);

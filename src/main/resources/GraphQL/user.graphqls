@@ -1,10 +1,11 @@
 type Mutation {
     createUser(auth: AuthData) : User
-    signinUser(auth: AuthData) : SigninPayload
+#    signinUser(auth: AuthData) : SigninPayload
 }
 
 type Query {
     getNumber: Int
+    getSecuredNumber: Int
 }
 
 type User {
@@ -18,7 +19,7 @@ input AuthData {
     password: String
 }
 
-type SigninPayload {
-    token: String
-    expiryTime: Int
-}
+#type SigninPayload {
+#    token: String
+#    expiryTime: Int
+#}
