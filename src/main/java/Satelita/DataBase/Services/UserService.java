@@ -4,7 +4,6 @@ import Satelita.DataBase.Enum.EnrollEnum;
 import Satelita.DataBase.Enum.LoginEnum;
 import Satelita.DataBase.Enum.RoleEnum;
 import Satelita.DataBase.Models.Auth;
-import Satelita.DataBase.Models.SigninPayload;
 import Satelita.DataBase.Models.User;
 import Satelita.DataBase.Repository.UserRepository;
 import Satelita.DataBase.Tools.ServiceResult;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.servlet.http.HttpSession;
 import java.nio.charset.StandardCharsets;
 
 @Service("userService")
@@ -23,47 +21,47 @@ public class UserService implements IUserService {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    HttpSession httpSession;
+//    @Autowired
+//    HttpSession httpSession;
 
-    @Override
-    public ServiceResult<SigninPayload, LoginEnum> loginUser(Auth auth) {
-
-        ServiceResult<SigninPayload, LoginEnum> serviceResult = new ServiceResult<>();
-
-        if (auth.getLogin() == null || auth.getLogin().isEmpty()) {
-            serviceResult.setEnumValue(LoginEnum.MissingLogin);
-            return serviceResult;
-        }
-
-        if (auth.getPassword() == null || auth.getPassword().isEmpty()) {
-            serviceResult.setEnumValue(LoginEnum.MissingPassword);
-            return serviceResult;
-        }
-
-        String password = Hashing.sha256()
-                .hashString(
-                        auth.getPassword(),
-                        StandardCharsets.UTF_8)
-                .toString();
-
-        User u = userRepository.findByLoginAndPasswordAndDeletedFalse(auth.getLogin(), password);
-
-        if (u != null) {
-            serviceResult.setEnumValue(LoginEnum.Success);
-            return serviceResult;
-        }
-
-        u = userRepository.findByLoginAndDeletedFalse(auth.getLogin());
-
-        if (u != null) {
-            serviceResult.setEnumValue(LoginEnum.WrongPassword);
-        } else {
-            serviceResult.setEnumValue(LoginEnum.LoginNotFound);
-        }
-
-        return serviceResult;
-    }
+//    @Override
+//    public ServiceResult<SigninPayload, LoginEnum> loginUser(Auth auth) {
+//
+//        ServiceResult<SigninPayload, LoginEnum> serviceResult = new ServiceResult<>();
+//
+//        if (auth.getLogin() == null || auth.getLogin().isEmpty()) {
+//            serviceResult.setEnumValue(LoginEnum.MissingLogin);
+//            return serviceResult;
+//        }
+//
+//        if (auth.getPassword() == null || auth.getPassword().isEmpty()) {
+//            serviceResult.setEnumValue(LoginEnum.MissingPassword);
+//            return serviceResult;
+//        }
+//
+//        String password = Hashing.sha256()
+//                .hashString(
+//                        auth.getPassword(),
+//                        StandardCharsets.UTF_8)
+//                .toString();
+//
+//        User u = userRepository.findByLoginAndPasswordAndDeletedFalse(auth.getLogin(), password);
+//
+//        if (u != null) {
+//            serviceResult.setEnumValue(LoginEnum.Success);
+//            return serviceResult;
+//        }
+//
+//        u = userRepository.findByLoginAndDeletedFalse(auth.getLogin());
+//
+//        if (u != null) {
+//            serviceResult.setEnumValue(LoginEnum.WrongPassword);
+//        } else {
+//            serviceResult.setEnumValue(LoginEnum.LoginNotFound);
+//        }
+//
+//        return serviceResult;
+//    }
 
     @Override
     public ServiceResult<User, EnrollEnum> registerUser(Auth authData) {
