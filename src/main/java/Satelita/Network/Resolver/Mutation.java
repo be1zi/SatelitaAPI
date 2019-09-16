@@ -16,6 +16,7 @@ public class Mutation implements GraphQLMutationResolver {
     IUserService iUserService;
 
     public User createUser(Auth authData) {
+
         return iUserService.registerUser(authData).getData();
     }
 
